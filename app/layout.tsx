@@ -7,6 +7,7 @@ import {
   Instrument_Serif,
   JetBrains_Mono,
   Manrope,
+  Martian_Mono,
 } from "next/font/google";
 import { ThemeFrame } from "@/components/site/ThemeFrame";
 import "./globals.css";
@@ -25,6 +26,8 @@ const ibmPlexSans = IBM_Plex_Sans({
 const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"] });
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"] });
 const jetbrainsMono = JetBrains_Mono({ variable: "--font-jetbrains-mono", subsets: ["latin"] });
+// The ASCII world: one monospace family, used across its width and weight axes.
+const martianMono = Martian_Mono({ variable: "--font-martian", subsets: ["latin"], axes: ["wdth"] });
 
 export const metadata: Metadata = {
   title: "ardbergai - Where intelligence becomes impact",
@@ -37,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${ibmPlexSans.variable} ${dmSans.variable} ${manrope.variable} ${jetbrainsMono.variable}`}
+      className={`${instrumentSans.variable} ${instrumentSerif.variable} ${ibmPlexSans.variable} ${dmSans.variable} ${manrope.variable} ${jetbrainsMono.variable} ${martianMono.variable}`}
     >
       <body className="flex min-h-screen flex-col">
         <Suspense fallback={null}>

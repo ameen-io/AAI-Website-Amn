@@ -1,19 +1,26 @@
-import { About } from "@/components/version2/sections/About";
-import { Intro } from "@/components/version2/sections/Intro";
-import { Approach } from "@/components/version2/sections/Approach";
-import { Offer } from "@/components/version2/sections/Offer";
-import { Industries } from "@/components/version2/sections/Industries";
-import { LetsBuild } from "@/components/version2/sections/LetsBuild";
+import { GlyphCanvas } from "@/components/glyph/GlyphCanvas";
+import { Approach } from "@/components/glyph/sections/Approach";
+import { Contact } from "@/components/glyph/sections/Contact";
+import { Hero } from "@/components/glyph/sections/Hero";
+import { Industries } from "@/components/glyph/sections/Industries";
+import { Intro } from "@/components/glyph/sections/Intro";
+import { Offer } from "@/components/glyph/sections/Offer";
+import "@/components/glyph/glyph.css";
 
+/**
+ * ASCII remake: every section is assembled from scattered glyphs as it
+ * scrolls in. The original version-2 sections remain in components/version2.
+ */
 export function HomeSections() {
   return (
     <>
-      <About />
+      <GlyphCanvas />
+      <Hero />
       <Intro />
       <Approach />
       <Offer />
       <Industries />
-      <LetsBuild />
+      <Contact />
     </>
   );
 }

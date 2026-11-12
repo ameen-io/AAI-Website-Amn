@@ -1,0 +1,690 @@
+/* ---------------------------------------------------------------------------
+ * Glyph world: layout and type. Everything visible is a character; the
+ * assembler (assembler.ts) draws it in from scattered glyphs on scroll.
+ * ------------------------------------------------------------------------- */
+
+.glyph-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* Text hides until its glyphs have assembled; mosaic headings stay hidden
+   because the mosaic is their visible form. Without JS nothing is hidden. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  html:not(.glyph-ready) [data-asm] {
+    -webkit-text-fill-color: transparent;
+    animation: glyph-failsafe 0.01s 3.5s forwards;
+  }
+}
+
+@keyframes glyph-failsafe {
+  to {
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+.glyph-ready [data-asm] {
+  -webkit-text-fill-color: transparent;
+}
+
+.glyph-ready [data-asm].is-built {
+  -webkit-text-fill-color: currentColor;
+}
+
+.glyph-ready [data-asm="mosaic"],
+.glyph-ready [data-asm="mosaic"].is-built {
+  -webkit-text-fill-color: transparent;
+}
+
+.glyph-ready [data-asm="mosaic"][data-mosaic-off].is-built {
+  -webkit-text-fill-color: currentColor;
+}
+
+html:not(.glyph-ready) [data-frame] {
+  outline: 1px dashed currentColor;
+  outline-offset: -1px;
+}
+
+/* ---- Layout ------------------------------------------------------------- */
+
+.g-wrap {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 48px);
+}
+
+.g-section {
+  position: relative;
+  padding-block: clamp(72px, 11vw, 150px);
+}
+
+.g-section[id] {
+  scroll-margin-top: 4rem;
+}
+
+.g-ink {
+  background: var(--ink);
+  color: var(--paper);
+  --frame-color: rgb(236 238 238 / 0.55);
+}
+
+.g-violet {
+  background: var(--violet);
+  color: var(--paper);
+  --frame-color: rgb(236 238 238 / 0.6);
+}
+
+/* ---- Frames: ASCII borders drawn around the box -------------------------- */
+
+[data-frame] {
+  position: relative;
+  --frame-color: rgb(12 13 15 / 0.5);
+  --frame-size: 13px;
+}
+
+.g-ink [data-frame] {
+  --frame-color: rgb(236 238 238 / 0.5);
+}
+
+.g-violet [data-frame] {
+  --frame-color: rgb(236 238 238 / 0.65);
+}
+
+[data-frame-label] {
+  position: absolute;
+  top: 0;
+  left: 3ch;
+  translate: 0 -50%;
+  padding-inline: 1ch;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+[data-frame-label="right"] {
+  right: 3ch;
+  left: auto;
+}
+
+/* ---- Type --------------------------------------------------------------- */
+
+.g-display {
+  margin: 0;
+  font-size: clamp(46px, 9.4vw, 148px);
+  font-weight: 800;
+  font-stretch: 100%;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.g-headline {
+  margin: 0;
+  font-size: clamp(34px, 5.8vw, 92px);
+  font-weight: 800;
+  font-stretch: 100%;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.g-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.g-body {
+  max-width: 62ch;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.g-ink .g-body,
+.g-violet .g-body {
+  color: rgb(236 238 238 / 0.82);
+}
+
+.g-title {
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: inherit;
+}
+
+.g-lead {
+  max-width: 30ch;
+  font-size: clamp(19px, 2vw, 27px);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--violet);
+}
+
+.g-art {
+  margin: 0;
+  font-weight: 500;
+  font-stretch: 100%;
+  line-height: 1.25;
+  white-space: pre;
+  user-select: none;
+}
+
+/* ---- Controls ------------------------------------------------------------ */
+
+.g-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 1ch;
+  min-height: 48px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.g-btn:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.g-btn-primary {
+  color: var(--violet);
+}
+
+.g-btn-primary:hover {
+  background: var(--violet);
+  color: var(--paper);
+}
+
+.g-violet .g-btn:hover,
+.g-ink .g-btn:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.g-btn:focus-visible,
+.g-link:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+}
+
+.g-violet .g-btn:focus-visible {
+  outline-color: var(--paper);
+}
+
+.g-link {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--violet);
+  text-decoration: none;
+}
+
+.g-link:hover {
+  background: var(--violet);
+  color: var(--paper);
+}
+
+@keyframes g-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---- Section rules (eyebrow labels sit inside a ruled line) ------------- */
+
+.g-rule {
+  height: 24px;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+.g-rule [data-frame-label] {
+  top: 50%;
+  left: 0;
+  padding-left: 0;
+}
+
+.g-ink {
+  --violet-light: #a990ff;
+}
+
+.g-ink :is(h1, h2, h3),
+.g-violet :is(h1, h2, h3) {
+  color: var(--paper);
+}
+
+.g-ink .g-accent,
+.g-ink .g-step-label,
+.g-ink .g-cluster-out {
+  color: var(--violet-light);
+}
+
+.g-accent {
+  color: var(--violet);
+}
+
+/* ---- Hero --------------------------------------------------------------- */
+
+.g-hero {
+  padding-top: clamp(36px, 5.5vw, 84px);
+  padding-bottom: clamp(56px, 7vw, 96px);
+}
+
+.g-hero .g-display {
+  font-size: clamp(44px, 8.4vw, 136px);
+  letter-spacing: -0.04em;
+}
+
+.g-hero-grid {
+  display: grid;
+  gap: 48px;
+  margin-top: clamp(36px, 4vw, 56px);
+}
+
+.g-hero-grid > * {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.g-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 22px;
+  margin-top: 36px;
+}
+
+.g-hero-diagram {
+  font-size: min(13px, calc(100cqw / 43));
+  color: var(--ink);
+}
+
+.g-steps {
+  display: grid;
+  gap: 40px;
+  margin-top: clamp(56px, 7vw, 88px);
+  padding: 48px clamp(22px, 3vw, 40px) 36px;
+}
+
+.g-step {
+  position: relative;
+}
+
+.g-step-label {
+  margin-bottom: 14px;
+  color: var(--violet);
+}
+
+.g-step .g-title {
+  margin-bottom: 10px;
+}
+
+.g-step-arrow {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: -34px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--violet);
+}
+
+.g-scroll {
+  display: inline-block;
+  margin-top: 40px;
+}
+
+/* ---- Intro -------------------------------------------------------------- */
+
+.g-intro-panel {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+  padding: clamp(40px, 5vw, 72px) clamp(22px, 4vw, 64px);
+}
+
+.g-intro-body {
+  margin-top: 32px;
+  color: var(--ink-soft);
+  font-weight: 400;
+}
+
+.g-helix {
+  justify-self: center;
+  font-size: clamp(12px, 1.2vw, 17px);
+  line-height: 1.1;
+  color: var(--violet);
+}
+
+/* ---- Approach ----------------------------------------------------------- */
+
+.g-cluster {
+  margin-top: clamp(40px, 5vw, 64px);
+}
+
+.g-cluster-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.g-cluster-body {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+
+.g-cluster-body > * {
+  min-width: 0;
+}
+
+.g-cluster-art {
+  container-type: inline-size;
+}
+
+.g-cluster-wide {
+  display: none;
+  font-size: min(17px, calc(100cqw / 55));
+}
+
+.g-cluster-narrow {
+  font-size: min(12px, calc(100cqw / 26));
+}
+
+.g-result {
+  padding: 40px 28px 30px;
+}
+
+.g-bars {
+  font-size: 10px;
+  line-height: 1;
+  color: var(--violet-light);
+}
+
+.g-result-title {
+  margin: 20px 0 10px;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.g-cluster-foot {
+  margin-top: 28px;
+  color: rgb(236 238 238 / 0.7);
+}
+
+.g-approach-steps {
+  margin-top: clamp(56px, 7vw, 88px);
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- Offer -------------------------------------------------------------- */
+
+.g-offer {
+  display: grid;
+  gap: 64px 44px;
+  margin-top: clamp(44px, 5vw, 72px);
+  padding: 0;
+  list-style: none;
+}
+
+.g-offer-item {
+  container-type: inline-size;
+  min-width: 0;
+}
+
+.g-emblem {
+  display: flex;
+  align-items: flex-end;
+  min-height: 8.75em;
+  margin-bottom: 28px;
+  font-size: min(14px, calc(100cqw / 22.5));
+  color: var(--violet);
+}
+
+/* ---- Industries --------------------------------------------------------- */
+
+.g-industries-head {
+  display: grid;
+  gap: 32px;
+}
+
+.g-industries-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: clamp(48px, 6vw, 72px) 0 44px;
+  color: var(--ink-soft);
+}
+
+.g-industry-grid {
+  display: grid;
+  gap: 44px;
+}
+
+.g-industry {
+  display: grid;
+  gap: 24px;
+  padding: 44px clamp(20px, 2.5vw, 32px) 30px;
+  scroll-margin-top: 6rem;
+}
+
+.g-industry-art {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  container-type: inline-size;
+  min-width: 0;
+  color: var(--ink-soft);
+}
+
+.g-industry-icon {
+  font-size: min(7.5px, calc(100cqw / 31));
+  line-height: 1.12;
+  color: var(--ink);
+}
+
+.g-industry-icon.g-accent {
+  color: var(--violet);
+}
+
+.g-industry-copy .g-title,
+.g-offer-item .g-title {
+  margin-bottom: 12px;
+}
+
+.g-offer-item .g-step-label {
+  margin-bottom: 10px;
+}
+
+.g-industry-signals {
+  margin-top: 18px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.g-industry-link {
+  display: inline-block;
+  margin-top: 22px;
+}
+
+.g-beyond {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+  padding: 44px clamp(20px, 3vw, 36px) 32px;
+}
+
+.g-beyond .g-title {
+  max-width: 44ch;
+}
+
+/* ---- Contact ------------------------------------------------------------ */
+
+.g-contact {
+  padding-block: clamp(96px, 14vw, 200px);
+}
+
+.g-contact .g-display {
+  font-size: clamp(42px, 8vw, 128px);
+}
+
+.g-cursor {
+  margin-left: 0.04em;
+  animation: g-blink 1.1s steps(1, end) infinite;
+}
+
+.g-contact-body {
+  margin-top: 32px;
+  font-size: 17px;
+}
+
+.g-contact-cta {
+  margin-top: 44px;
+  color: var(--paper);
+}
+
+.g-contact-meta {
+  margin-top: 36px;
+  color: rgb(236 238 238 / 0.85);
+}
+
+/* ---- Breakpoints -------------------------------------------------------- */
+
+@media (min-width: 768px) {
+  .g-steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px;
+  }
+
+  .g-step-arrow {
+    display: block;
+  }
+
+  .g-offer {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .g-industry {
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .g-hero-grid {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: start;
+  }
+
+  .g-intro-panel {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .g-cluster-body {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 300px);
+  }
+
+  .g-cluster-wide {
+    display: block;
+  }
+
+  .g-cluster-narrow {
+    display: none;
+  }
+
+  .g-industries-head {
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
+    align-items: end;
+  }
+}
+
+@media (min-width: 1200px) {
+  .g-industry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * World tokens (applied on ThemeFrame's root). One look for every route,
+ * palette pages included: cool paper, carbon ink, one electric violet, one
+ * monospace family. Existing palette tokens are remapped so the header,
+ * menus and footer follow the world without changing their behaviour.
+ * ------------------------------------------------------------------------- */
+.glyph-world.glyph-world {
+  color-scheme: light;
+  --paper: #eceeee;
+  --paper-deep: #e1e4e5;
+  --ink: #0c0d0f;
+  --ink-soft: #464b52;
+  --dim: #8b9097;
+  --violet: #5a2bff;
+  --violet-deep: #4317f0;
+
+  --graphite: var(--paper);
+  --panel: var(--paper-deep);
+  --elevated: #d5d9da;
+  --mist: var(--ink);
+  --lavender: var(--violet);
+  --lavender-hover: var(--violet-deep);
+  --gold: var(--violet);
+  --muted: var(--ink-soft);
+  --line: rgb(12 13 15 / 0.24);
+  --shadow-color: rgb(12 13 15 / 0.16);
+  --radius: 0px;
+
+  --foreground: var(--ink);
+  --background: var(--paper);
+  --primary: var(--violet);
+  --primary-foreground: var(--paper);
+  --secondary: var(--paper-deep);
+  --secondary-foreground: var(--ink);
+  --muted-foreground: var(--ink-soft);
+  --accent: #d5d9da;
+  --accent-foreground: var(--ink);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink);
+  --border: rgb(12 13 15 / 0.24);
+  --input: rgb(12 13 15 / 0.24);
+  --ring: var(--violet);
+
+  --font-palette-sans: var(--font-martian);
+  --font-palette-heading: var(--font-martian);
+  --font-palette-serif: var(--font-martian);
+  --font-jetbrains-mono: var(--font-martian);
+  font-family: var(--font-martian), ui-monospace, monospace;
+  font-stretch: 87.5%;
+  /* Canvas glyphs are drawn one by one, so the DOM text must not ligate. */
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+}
+
+.glyph-world .site-logo-mark {
+  filter: brightness(0);
+}
+
+.glyph-world ::selection {
+  background: color-mix(in srgb, #5a2bff 30%, transparent);
+}
+
+html:has(.glyph-world) {
+  scrollbar-color: #0c0d0f #eceeee;
+  background: #eceeee;
+}
