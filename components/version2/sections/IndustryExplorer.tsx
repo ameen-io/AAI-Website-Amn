@@ -1,49 +1,31 @@
-import { ArrowUpRightIcon, CarFrontIcon, FactoryIcon, FlaskConicalIcon, HeartPulseIcon, LandmarkIcon, RadioTowerIcon, ShoppingBagIcon, TruckIcon, WorkflowIcon, ZapIcon } from "lucide-react";
+import { ArrowUpRightIcon } from "lucide-react";
 import Link from "next/link";
+import { AsciiArt } from "@/components/ascii/AsciiArt";
+import { industryGlyphs } from "@/components/ascii/industry-glyphs";
 import { industries, industryAnchor } from "@/lib/version2-content";
 import { cn } from "@/lib/utils";
 
-const industryIcons = [FlaskConicalIcon, FactoryIcon, LandmarkIcon, ZapIcon, HeartPulseIcon, ShoppingBagIcon, TruckIcon, RadioTowerIcon, CarFrontIcon];
+const accents = ["text-lavender", "text-gold", "text-mist"] as const;
 
-const accents = [
-  { text: "text-lavender", border: "border-lavender/40", bar: "bg-lavender" },
-  { text: "text-gold", border: "border-gold/40", bar: "bg-gold" },
-  { text: "text-mist", border: "border-mist/40", bar: "bg-mist" },
-] as const;
-
+/** Each industry's icon, redrawn as ASCII art that decodes in as the card arrives (and again on hover). */
 function IndustryArtwork({ index, signal }: { index: number; signal: string }) {
-  const Icon = industryIcons[index] ?? WorkflowIcon;
-  const accent = accents[index % accents.length];
-
   return (
-    <div className="relative h-44 shrink-0 overflow-hidden border-b border-line bg-elevated/40 md:h-full md:w-[60%] md:border-b-0 md:border-l" aria-hidden="true">
-      <div
-        className="absolute inset-0 opacity-40"
-        style={{ backgroundImage: "linear-gradient(to right, color-mix(in srgb, var(--mist) 7%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--mist) 7%, transparent) 1px, transparent 1px)", backgroundSize: "24px 24px" }}
-      />
-      <span className="absolute left-5 top-5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+    <div
+      className="relative h-44 shrink-0 overflow-hidden border-b border-line bg-graphite [container-type:size] md:h-full md:w-[60%] md:border-b-0 md:border-l"
+      aria-hidden="true"
+    >
+      <span className="absolute left-5 top-5 z-[1] font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
         Industry / {String(index + 1).padStart(2, "0")}
       </span>
-      <svg viewBox="0 0 360 176" preserveAspectRatio="none" className={cn("absolute inset-0 size-full", accent.text)} fill="none">
-        <path d="M160 120 H210 C235 120 235 72 260 72 H320" stroke="currentColor" strokeWidth="1.5" opacity=".55" />
-        <circle cx="210" cy="120" r="3" fill="currentColor" />
-        <circle cx="260" cy="72" r="3" fill="currentColor" />
-      </svg>
-      <div className={cn("absolute right-7 top-11 flex size-20 items-center justify-center rounded-full border bg-panel/90 transition-transform duration-300 group-hover:scale-110 md:right-[12%] md:top-[20%] md:size-28", accent.border)}>
-        <Icon className={cn("size-9 md:size-12", accent.text)} strokeWidth={1.5} />
+      <div className="absolute inset-0 flex items-center justify-center md:justify-end md:pr-[9%]">
+        <AsciiArt
+          lines={industryGlyphs[index] ?? industryGlyphs[0]}
+          className={cn("text-[min(3.4cqh,2.3cqw,11px)]", accents[index % accents.length])}
+        />
       </div>
-      <div className="absolute bottom-5 left-5 w-[54%] rounded-lg border border-line bg-panel/95 px-3 py-2.5 shadow-lg md:bottom-[16%] md:left-[8%] md:w-[48%] md:p-4">
-        <span className="block truncate font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">{signal}</span>
-        <div className="mt-2 flex h-6 items-end gap-1">
-          {Array.from({ length: 12 }, (_, bar) => (
-            <span
-              key={bar}
-              className={cn("min-w-0 flex-1 rounded-t-[2px] opacity-75", accent.bar)}
-              style={{ height: `${7 + ((bar * 7 + index * 5) % 18)}px` }}
-            />
-          ))}
-        </div>
-      </div>
+      <span className="absolute bottom-5 left-5 z-[1] border border-line bg-panel px-2.5 py-1.5 font-mono text-[9px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+        {signal}
+      </span>
     </div>
   );
 }

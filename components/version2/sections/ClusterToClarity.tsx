@@ -1,47 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRightIcon, SparklesIcon } from "lucide-react";
+import { ArrowUpRightIcon } from "lucide-react";
 import { approach } from "@/lib/version2-content";
 import "./ClusterToClarity.css";
 
-const desktopPaths = [
-  "M155 43 C350 43 360 162 500 180",
-  "M255 106 C380 106 410 175 500 180",
-  "M145 180 C350 155 405 205 500 180",
-  "M275 254 C390 254 405 185 500 180",
-  "M210 315 C365 315 380 195 500 180",
-  "M550 180 H700",
-];
-
-const mobilePaths = [
-  "M100 58 C100 178 170 220 180 295",
-  "M275 105 C275 205 195 230 180 295",
-  "M80 160 C80 240 165 250 180 295",
-  "M260 205 C260 260 195 270 180 295",
-  "M110 242 C130 270 160 280 180 295",
-  "M180 330 V355",
-];
-
-function FlowLines({ paths, mobile = false }: { paths: string[]; mobile?: boolean }) {
-  return (
-    <svg
-      className={`clarity-lines ${mobile ? "clarity-lines-mobile" : "clarity-lines-desktop"}`}
-      viewBox={mobile ? "0 0 360 510" : "0 0 1000 360"}
-      preserveAspectRatio="none"
-      fill="none"
-      aria-hidden="true"
-    >
-      {paths.map((path, index) => (
-        <g key={path}>
-          <path d={path} className="clarity-wire" pathLength="1" style={{ animationDelay: `${index * 100}ms` }} />
-          <path d={path} className="clarity-wire-pulse" pathLength="1" style={{ animationDelay: `${1.5 + index * 0.27}s` }} />
-        </g>
-      ))}
-    </svg>
-  );
-}
-
+/**
+ * "From cluster to clarity". The chips, core label and result card are HTML;
+ * the glyph canvas (AsciiField, scene "cluster") draws the noisy clusters,
+ * the streams into the core, and the single clean line out to the result.
+ */
 export function ClusterToClarity() {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -67,35 +35,28 @@ export function ClusterToClarity() {
   return (
     <div
       ref={ref}
-      className={`clarity-panel relative isolate overflow-hidden rounded-[2rem] border border-line bg-panel p-5 sm:p-8 ${inView ? "is-visible" : ""}`}
+      className={`clarity-panel relative overflow-hidden rounded-[2rem] border border-line p-5 sm:p-8 ${inView ? "is-visible" : ""}`}
       role="img"
       aria-label="Five disconnected sources converge through ArdbergAI into one connected intelligence."
     >
-      <div className="clarity-grid" aria-hidden="true" />
       <div className="relative flex items-center justify-between gap-4 font-mono text-[10px] font-bold uppercase tracking-[0.18em] sm:text-xs" aria-hidden="true">
         <span className="text-muted-foreground">01 / Scattered inputs</span>
         <span className="text-lavender">02 / Connected outcome</span>
       </div>
 
-      <div className="clarity-stage" aria-hidden="true">
-        <FlowLines paths={desktopPaths} />
-        <FlowLines paths={mobilePaths} mobile />
-
+      <div className="clarity-stage" data-ascii-stage="cluster" aria-hidden="true">
         {approach.cluster.map((label, index) => (
-          <div key={label} className={`clarity-chip clarity-chip-${index + 1}`}>
+          <div key={label} data-ascii-anchor={`chip${index}`} className={`clarity-chip clarity-chip-${index + 1}`}>
             <span className="clarity-chip-dot" />
             <span>{label}</span>
           </div>
         ))}
 
-        <div className="clarity-core">
-          <div className="clarity-core-halo" />
-          <div className="clarity-core-ring" />
-          <SparklesIcon className="relative size-8 text-gold" strokeWidth={1.5} />
+        <div className="clarity-core" data-ascii-anchor="core">
           <span className="clarity-core-label">ArdbergAI</span>
         </div>
 
-        <div className="clarity-result">
+        <div className="clarity-result" data-ascii-anchor="result">
           <div className="flex items-center justify-between gap-2">
             <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-gold">Unified system</span>
             <ArrowUpRightIcon className="size-4 text-lavender" />

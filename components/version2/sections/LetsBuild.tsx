@@ -1,4 +1,5 @@
 import { ArrowRightIcon } from "lucide-react";
+import { DecodeText } from "@/components/ascii/DecodeText";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/version2/site/Section";
 import { contact, site } from "@/lib/version2-content";
@@ -6,7 +7,11 @@ import { contact, site } from "@/lib/version2-content";
 export function LetsBuild() {
   return (
     <Section id="contact" tone="dark" className="text-center">
-      <h2 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-mist sm:text-6xl">{contact.title}</h2>
+      {/* Every glyph on the page spirals into this one blinking cursor. */}
+      <h2 data-ascii-stage="collapse" className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-mist sm:text-6xl">
+        <DecodeText text={contact.title} />
+        <span data-ascii-anchor="cursor" className="ascii-cursor" aria-hidden="true" />
+      </h2>
       <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">{contact.body}</p>
       <Button
         render={<a href={`mailto:${site.email}`} />}

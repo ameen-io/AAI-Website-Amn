@@ -1,0 +1,93 @@
+/* Fixed glyph canvas: above section backgrounds, below section content. */
+.ascii-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+/* ---- Decoding text ------------------------------------------------------ */
+
+.dc {
+  position: relative;
+}
+
+.dc[data-s="0"],
+.dc[data-s="1"] {
+  -webkit-text-fill-color: transparent;
+}
+
+.dc[data-s="0"]::after,
+.dc[data-s="1"]::after {
+  content: attr(data-g);
+  content: attr(data-g) / "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.78em;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  pointer-events: none;
+}
+
+.dc[data-s="0"]::after {
+  -webkit-text-fill-color: currentColor;
+  opacity: 0.22;
+}
+
+.dc[data-s="1"]::after {
+  color: var(--decode-glyph, var(--lavender));
+  -webkit-text-fill-color: var(--decode-glyph, var(--lavender));
+}
+
+/* Hero text decodes on load: keep it hidden until the script takes over,
+   with a failsafe that reveals it if the script never runs. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-decode="load"]:not([data-ready]) .dc {
+    -webkit-text-fill-color: transparent;
+    animation: decode-failsafe 0.01s 2.5s forwards;
+  }
+}
+
+@keyframes decode-failsafe {
+  to {
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* ---- Terminal cursor (contact) ----------------------------------------- */
+
+.ascii-cursor {
+  display: inline-block;
+  width: 0.46em;
+  height: 0.8em;
+  margin-left: 0.12em;
+  vertical-align: -0.04em;
+  background: var(--lavender);
+  animation: ascii-blink 1.1s steps(1, end) infinite;
+}
+
+@keyframes ascii-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---- ASCII artwork (industries) ---------------------------------------- */
+
+.ascii-art {
+  margin: 0;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0;
+  white-space: pre;
+  user-select: none;
+}

@@ -1,3 +1,4 @@
+import { DecodeText } from "@/components/ascii/DecodeText";
 import { Eyebrow, Section } from "@/components/version2/site/Section";
 import { ClusterToClarity } from "@/components/version2/sections/ClusterToClarity";
 import { approach } from "@/lib/version2-content";
@@ -6,7 +7,9 @@ export function Approach() {
   return (
     <Section id="approach">
       <Eyebrow>{approach.eyebrow}</Eyebrow>
-      <h2 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">{approach.title}</h2>
+      <h2 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl">
+        <DecodeText text={approach.title} />
+      </h2>
 
       <div className="mt-10">
         <ClusterToClarity />

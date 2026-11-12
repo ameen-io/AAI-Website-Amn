@@ -1,3 +1,4 @@
+import { AsciiField } from "@/components/ascii/AsciiField";
 import { About } from "@/components/version2/sections/About";
 import { Intro } from "@/components/version2/sections/Intro";
 import { Approach } from "@/components/version2/sections/Approach";
@@ -8,6 +9,7 @@ import { LetsBuild } from "@/components/version2/sections/LetsBuild";
 export function HomeSections() {
   return (
     <>
+      <AsciiField />
       <About />
       <Intro />
       <Approach />

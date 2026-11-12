@@ -1,3 +1,4 @@
+import { DecodeText } from "@/components/ascii/DecodeText";
 import { Eyebrow, Section } from "@/components/version2/site/Section";
 import { IndustryExplorer } from "@/components/version2/sections/IndustryExplorer";
 import { industries } from "@/lib/version2-content";
@@ -11,11 +12,19 @@ export function Industries() {
         <div>
           <Eyebrow>{industries.eyebrow}</Eyebrow>
           <h2 className="mt-5 max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-            <span className="block">{industries.titleLines[0]}</span>
-            <span className="mt-2 inline-block bg-lavender px-2 pb-1 text-graphite">{industries.titleLines[1]}</span>
+            <span className="block">
+              <DecodeText text={industries.titleLines[0]} />
+            </span>
+            <span className="mt-2 inline-block bg-lavender px-2 pb-1 text-graphite [--decode-glyph:var(--graphite)] sm:whitespace-nowrap">
+              <DecodeText text={industries.titleLines[1]} />
+            </span>
           </h2>
         </div>
-        <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">{industries.description}</p>
+        <div>
+          {/* Nine industries as a 3x3 glyph matrix, drawn by the glyph canvas. */}
+          <div data-ascii-stage="matrix" className="mb-6 hidden h-32 lg:block" aria-hidden="true" />
+          <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">{industries.description}</p>
+        </div>
       </div>
 
       <IndustryExplorer />
