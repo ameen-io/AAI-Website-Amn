@@ -1,0 +1,36 @@
+.text-stream-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* While an element's characters are in flight, the canvas draws its text.
+   Nested elements that are at rest keep showing their own DOM text. */
+[data-stream-hide] {
+  -webkit-text-fill-color: transparent;
+}
+
+[data-stream-hide] * {
+  -webkit-text-fill-color: currentColor;
+}
+
+[data-stream-hide] [data-stream-hide] {
+  -webkit-text-fill-color: transparent;
+}
+
+/* The hero gathers out of glyphs on load: keep its text hidden until the
+   script takes over, with a failsafe in case it never does. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  html:not(.stream-ready) #about :not(pre):not(pre *) {
+    -webkit-text-fill-color: transparent;
+    animation: stream-failsafe 0.01s 3s forwards;
+  }
+}
+
+@keyframes stream-failsafe {
+  to {
+    -webkit-text-fill-color: currentColor;
+  }
+}

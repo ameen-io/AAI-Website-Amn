@@ -1,0 +1,130 @@
+{
+  "title": "Choose the ASCII world",
+  "question": "The roll assigned The Card Sorter. Keep it, take an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "The Card Sorter",
+      "kicker": "THE ROLL",
+      "lineage": "IBM 80-column punched cards and the card sorter",
+      "thesis": "The whole site is a deck of punched cards that sorts itself from scattered to one clean stack as you scroll.",
+      "palette": ["#1b2430", "#e4dbc1", "#141619", "#8b5cff"],
+      "materials": ["card stock with the pre-printed 0-9 digit field", "punched holes lit from behind", "sorter-pocket steel"],
+      "viewport": "One full-width card whose digit field punches out EVERY INDUSTRY RUNS ON COMPLEXITY as giant hole-letters, while the interpreter prints the same words along the card's top edge.",
+      "risk": "Can read as nostalgic computing unless the scale and motion feel precise and modern.",
+      "raised": [
+        { "from": "challenger-provenance", "raise": "Every card carries a visible state, blank to punched to verified, and gets a verifier notch once its section resolves." },
+        { "from": "challenger-multiplane", "raise": "Readable text always sits on the nearest plane; glyph fields drift on two slower planes behind it." },
+        { "from": "challenger-broadside", "raise": "Body copy is set in hard, fixed-measure monospace columns instead of floating cards." },
+        { "from": "challenger-lookbook", "raise": "Headlines punch at monumental, edge-to-edge scale, with wide quiet fields between sections." }
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "The Engineering Spec",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "IETF RFC plain-text standards",
+      "thesis": "The site as an authoritative plain-text specification: numbered sections, ASCII system diagrams, page footers.",
+      "palette": ["#f7f7f4", "#111111", "#0047ff"],
+      "materials": ["monospace on white paper", "ASCII box-and-arrow diagrams"],
+      "viewport": "1. INTRODUCTION set huge; a diagram of five boxes wiring into one assembles character by character beside it.",
+      "risk": "The familiar developer-docs look; it can feel dry, and many technical sites land here."
+    },
+    {
+      "id": "challenger-splitflap",
+      "label": "Departure Board",
+      "verdict": "competitive",
+      "lineage": "rail concourse split-flap boards",
+      "thesis": "Every line of copy is a row of flaps that cascades from noise into words as it arrives.",
+      "palette": ["#0e0f10", "#f2f2ee", "#b8bcc2", "#ffb000"],
+      "materials": ["matte black flaps", "brushed steel frame", "amber row lamps"],
+      "viewport": "A full-width board: rows flap into EVERY INDUSTRY RUNS ON COMPLEXITY, and the nine industries are listed like departures.",
+      "case": "Fuses cleanly with 'everything assembles'; loses on audience fit because it reads as travel, not data.",
+      "risk": "Turns gimmicky if the grid is not strict.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/signals-instruments-split-flap-concourse.webp"
+    },
+    {
+      "id": "challenger-glyphrender",
+      "label": "Glyph Render",
+      "verdict": "competitive",
+      "lineage": "ASCII density rendering",
+      "thesis": "A live 3D scene drawn in characters: five scattered shards converge into one form, and the copy uses the same glyph ramp.",
+      "palette": ["#0a0b0d", "#e8e6e1", "#7cf2c4"],
+      "materials": ["one strict monospace grid", "luminance ramp . : - = + * # % @"],
+      "viewport": "A rotating glyph sculpture fusing five shards into one, with the headline rendered by the same ramp.",
+      "case": "The purest form of the ASCII idea; loses on audience fit because of its hacker-terminal associations.",
+      "risk": "Glyphs on black is where most ASCII sites land.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-ascii-live-scene-render-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/medium-native-ascii-live-scene-render.webp"
+    },
+    {
+      "id": "challenger-provenance",
+      "label": "Provenance Ribbon",
+      "verdict": "declined",
+      "lineage": "museum provenance records",
+      "thesis": "Data lineage told as one ribbon of custody.",
+      "palette": ["#e9e1cf", "#b3122e", "#8a8a8a"],
+      "materials": ["archival buff", "red silk custody line"],
+      "viewport": "One ribbon-led column of dated custody.",
+      "case": "Fuses poorly: a museum frame that buyers don't read as their data world.",
+      "kept": "Known, inferred and verified states stay visible at every step.",
+      "risk": "Archival and slow.",
+      "hero": "https://impeccable.style/worlds/cards/exhibition-museum-curation-provenance-ribbon-hero.webp"
+    },
+    {
+      "id": "challenger-multiplane",
+      "label": "Multiplane Depth",
+      "verdict": "declined",
+      "lineage": "multiplane cel animation",
+      "thesis": "Content on painted planes moving at different speeds.",
+      "palette": ["#2f4a3a", "#8fa3a8", "#3a2618", "#f0b44a"],
+      "materials": ["painted depth planes"],
+      "viewport": "Planes slide past as the camera sinks through.",
+      "case": "Fuses poorly: storybook, not enterprise data.",
+      "kept": "Text always on the nearest plane, with depth behind it.",
+      "risk": "Whimsical for this audience.",
+      "hero": "https://impeccable.style/worlds/cards/cinema-cinematography-editing-multiplane-cel-dawn-hero.webp"
+    },
+    {
+      "id": "challenger-broadside",
+      "label": "Penny Broadside",
+      "verdict": "declined",
+      "lineage": "penny-press broadsides",
+      "thesis": "One loud printed sheet with dense two-column verse.",
+      "palette": ["#ece6d6", "#161412", "#d23a1e"],
+      "materials": ["relief ink on newsprint"],
+      "viewport": "A wood-type headline over two rammed columns.",
+      "case": "Fuses poorly: a satirical folk print.",
+      "kept": "Hard, dense, fixed-measure columns for body copy.",
+      "risk": "Wrong register for enterprise.",
+      "hero": "https://impeccable.style/worlds/cards/posters-covers-sleeves-posada-calavera-broadside-hero.webp"
+    },
+    {
+      "id": "challenger-lookbook",
+      "label": "Flagship Lookbook",
+      "verdict": "declined",
+      "lineage": "fashion house flagships",
+      "thesis": "Monumental type and vast quiet space.",
+      "palette": ["#f4f1ec", "#151515", "#8c6f4a"],
+      "materials": ["negative space", "monumental type"],
+      "viewport": "One enormous word set low on an empty field.",
+      "case": "Fuses poorly: retail luxury with no data story.",
+      "kept": "Monumental scale and wide quiet fields.",
+      "risk": "Says nothing about what ardbergai does.",
+      "hero": "https://impeccable.style/worlds/cards/luxury-fashion-flagship-hero.webp"
+    }
+  ],
+  "reroll": { "registers": ["safer", "bolder"] },
+  "buildPath": { "value": "code" },
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A dark AI-consultancy site executed impeccably: headline, network graphic, service cards, industry grid.",
+    "palette": ["#1c1e22", "#eceef0", "#a47fe3"],
+    "materials": ["clean grid", "abstract network graphic"],
+    "viewport": "Headline left, network illustration right, service cards below.",
+    "risk": "Indistinguishable from other AI firms, and close to the current site."
+  },
+  "steer": true
+}
